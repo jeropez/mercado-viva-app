@@ -745,3 +745,10 @@ h1, h2, h3, .titulo-marca {
     display: none;
   }
 }
+
+img.hero__imagen-slot {
+  border: none;
+  opacity: 1;
+  object-fit: cover;
+  background: none;
+}
