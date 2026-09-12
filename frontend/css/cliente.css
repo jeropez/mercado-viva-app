@@ -1,0 +1,747 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+h1, h2, h3, .titulo-marca {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+}
+
+/* =========================================================
+   BARRA SUPERIOR
+   ========================================================= */
+
+.topbar {
+  background: var(--color-blanco);
+  border-bottom: 1px solid var(--color-borde);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.topbar__inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* ---------------------------------------------------------
+   INSERCIÓN DE LOGO (topbar, versión pequeña)
+   Reemplaza el contenido de .marca__logo por:
+   <img src="/img/logo.png" alt="Mercado VIVA" style="height:32px;">
+   --------------------------------------------------------- */
+.marca__logo {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radio-sm);
+  background: var(--color-primario);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-family: 'Space Grotesk', sans-serif;
+  color: var(--color-texto);
+  flex-shrink: 0;
+}
+
+.marca__nombre {
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+}
+
+.buscador {
+  flex: 1;
+  display: flex;
+  max-width: 560px;
+}
+
+.buscador input {
+  flex: 1;
+  border: 1.5px solid var(--color-borde);
+  border-right: none;
+  border-radius: var(--radio-sm) 0 0 var(--radio-sm);
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  color: var(--color-texto);
+  background: var(--color-fondo);
+}
+
+.buscador input:focus {
+  outline: none;
+  border-color: var(--color-coral);
+}
+
+.buscador button {
+  border: 1.5px solid var(--color-borde);
+  background: var(--color-primario);
+  border-radius: 0 var(--radio-sm) var(--radio-sm) 0;
+  padding: 0 16px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.topbar__acciones {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.sede-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  font-size: 0.72rem;
+  color: var(--color-texto-suave);
+}
+
+.sede-selector select {
+  border: none;
+  background: none;
+  font-weight: 600;
+  font-size: 0.82rem;
+  color: var(--color-texto);
+  font-family: inherit;
+  padding: 0;
+}
+
+.btn {
+  border: none;
+  border-radius: var(--radio-sm);
+  padding: 9px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: transform 0.08s ease;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn--primario {
+  background: var(--color-coral);
+  color: var(--color-blanco);
+}
+
+.btn--secundario {
+  background: var(--color-fondo);
+  color: var(--color-texto);
+  border: 1.5px solid var(--color-borde);
+}
+
+.btn--texto {
+  background: none;
+  color: var(--color-texto);
+  padding: 9px 10px;
+}
+
+.btn--icono-carrito {
+  position: relative;
+}
+
+.carrito-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--color-coral);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =========================================================
+   HERO / BANNER PRINCIPAL
+   ========================================================= */
+
+.hero {
+  background: var(--color-primario);
+  overflow: hidden;
+  position: relative;
+}
+
+.hero__inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 48px 24px 56px;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 32px;
+}
+
+.hero__texto h1 {
+  font-size: 2.5rem;
+  line-height: 1.08;
+  margin: 0 0 14px;
+  max-width: 480px;
+}
+
+.hero__texto p {
+  font-size: 1rem;
+  max-width: 420px;
+  margin: 0 0 22px;
+  color: var(--color-texto);
+  opacity: 0.85;
+}
+
+/* ---------------------------------------------------------
+   INSERCIÓN DE IMAGEN / LOGO GRANDE EN EL BANNER PRINCIPAL
+   Este bloque es el espacio reservado para la imagen de marca
+   del banner (logo grande, ilustración o foto de campaña).
+   Reemplaza este div completo por, por ejemplo:
+   <img src="/img/banner-logo.png" alt="Mercado VIVA">
+   --------------------------------------------------------- */
+.hero__imagen-slot {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border: 2px dashed rgba(62, 51, 58, 0.35);
+  border-radius: var(--radio-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  color: var(--color-texto);
+  opacity: 0.6;
+  font-size: 0.85rem;
+}
+
+/* =========================================================
+   CATEGORÍAS / FILTROS
+   ========================================================= */
+
+.filtros {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 20px 24px 0;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  border: 1.5px solid var(--color-borde);
+  background: var(--color-blanco);
+  border-radius: 999px;
+  padding: 7px 16px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--color-texto);
+}
+
+.chip.activo {
+  background: var(--color-texto);
+  border-color: var(--color-texto);
+  color: var(--color-primario);
+}
+
+/* =========================================================
+   GRID DE PRODUCTOS
+   ========================================================= */
+
+.catalogo {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 28px 24px 60px;
+}
+
+.catalogo__titulo {
+  font-size: 1.15rem;
+  margin: 0 0 16px;
+}
+
+.grid-productos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+.tarjeta-producto {
+  background: var(--color-blanco);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.15s ease;
+}
+
+.tarjeta-producto:hover {
+  border-color: var(--color-coral);
+}
+
+.tarjeta-producto__imagen {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: var(--color-fondo);
+  overflow: hidden;
+}
+
+.tarjeta-producto__imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tarjeta-producto__cuerpo {
+  padding: 14px 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.tarjeta-producto__categoria {
+  font-size: 0.7rem;
+  color: var(--color-texto-suave);
+  text-transform: lowercase;
+}
+
+.tarjeta-producto__nombre {
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.tarjeta-producto__precio {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.tarjeta-producto__stock {
+  font-size: 0.75rem;
+  color: var(--color-texto-suave);
+}
+
+.tarjeta-producto__stock.agotado {
+  color: var(--color-coral);
+  font-weight: 600;
+}
+
+.tarjeta-producto__accion {
+  margin-top: 10px;
+}
+
+.tarjeta-producto__accion .btn {
+  width: 100%;
+}
+
+/* =========================================================
+   CARRITO (panel lateral)
+   ========================================================= */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(62, 51, 58, 0.4);
+  z-index: 90;
+  display: none;
+}
+
+.overlay.visible {
+  display: block;
+}
+
+.panel-carrito {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 400px;
+  max-width: 92vw;
+  height: 100%;
+  background: var(--color-blanco);
+  z-index: 100;
+  transform: translateX(100%);
+  transition: transform 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-carrito.visible {
+  transform: translateX(0);
+}
+
+.panel-carrito__header {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--color-borde);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.panel-carrito__header h2 {
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+.panel-carrito__cerrar {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  color: var(--color-texto-suave);
+  line-height: 1;
+}
+
+.panel-carrito__items {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 20px;
+}
+
+.item-carrito {
+  display: flex;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-fondo);
+}
+
+.item-carrito__imagen {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radio-sm);
+  overflow: hidden;
+  background: var(--color-fondo);
+  flex-shrink: 0;
+}
+
+.item-carrito__imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.item-carrito__info {
+  flex: 1;
+}
+
+.item-carrito__nombre {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+
+.item-carrito__controles {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+}
+
+.item-carrito__controles button {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  border: 1px solid var(--color-borde);
+  background: var(--color-fondo);
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.item-carrito__quitar {
+  border: none;
+  background: none;
+  color: var(--color-coral);
+  font-size: 0.75rem;
+  margin-left: auto;
+}
+
+.panel-carrito__resumen {
+  padding: 16px 20px 20px;
+  border-top: 1px solid var(--color-borde);
+}
+
+.panel-carrito__total {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin-bottom: 12px;
+}
+
+/* =========================================================
+   MODALES (login/registro, checkout, alternativas)
+   ========================================================= */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(62, 51, 58, 0.45);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-overlay.visible {
+  display: flex;
+}
+
+.modal {
+  background: var(--color-blanco);
+  border-radius: var(--radio-md);
+  width: 100%;
+  max-width: 460px;
+  max-height: 88vh;
+  overflow-y: auto;
+  padding: 26px 26px 24px;
+}
+
+.modal--ancho {
+  max-width: 640px;
+}
+
+.modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+
+.modal__header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.modal__cerrar {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  color: var(--color-texto-suave);
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--color-fondo);
+  border-radius: var(--radio-sm);
+  padding: 4px;
+  margin-bottom: 18px;
+}
+
+.tabs button {
+  flex: 1;
+  border: none;
+  background: none;
+  padding: 8px;
+  border-radius: 5px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-texto-suave);
+}
+
+.tabs button.activo {
+  background: var(--color-blanco);
+  color: var(--color-texto);
+  box-shadow: var(--sombra-sutil);
+}
+
+.campo {
+  margin-bottom: 14px;
+}
+
+.campo label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: var(--color-texto-suave);
+}
+
+.campo input, .campo select, .campo textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid var(--color-borde);
+  border-radius: var(--radio-sm);
+  font-family: inherit;
+  font-size: 0.88rem;
+  color: var(--color-texto);
+  background: var(--color-fondo);
+}
+
+.campo input:focus, .campo select:focus, .campo textarea:focus {
+  outline: none;
+  border-color: var(--color-coral);
+  background: var(--color-blanco);
+}
+
+.campo-grupo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.form-seccion-titulo {
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin: 18px 0 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--color-borde);
+}
+
+.form-seccion-titulo:first-child {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+.mensaje-error {
+  background: #FCEAE3;
+  color: #A34321;
+  padding: 10px 12px;
+  border-radius: var(--radio-sm);
+  font-size: 0.82rem;
+  margin-bottom: 14px;
+  display: none;
+}
+
+.mensaje-error.visible {
+  display: block;
+}
+
+.mensaje-exito {
+  background: #EAF7ED;
+  color: #1E6B3C;
+  padding: 10px 12px;
+  border-radius: var(--radio-sm);
+  font-size: 0.82rem;
+  margin-bottom: 14px;
+  display: none;
+}
+
+.mensaje-exito.visible {
+  display: block;
+}
+
+/* Alternativas cuando un producto no tiene stock */
+.alternativa-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-sm);
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.alternativa-item__imagen {
+  width: 50px;
+  height: 50px;
+  border-radius: var(--radio-sm);
+  overflow: hidden;
+  background: var(--color-fondo);
+  flex-shrink: 0;
+}
+
+.alternativa-item__imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.alternativa-item__info {
+  flex: 1;
+}
+
+.alternativa-item__etiqueta {
+  display: inline-block;
+  background: var(--color-teal);
+  color: var(--color-texto);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-bottom: 4px;
+}
+
+/* =========================================================
+   HISTORIAL DE PEDIDOS
+   ========================================================= */
+
+.pedido-card {
+  background: var(--color-blanco);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-md);
+  padding: 16px 18px;
+  margin-bottom: 12px;
+}
+
+.pedido-card__header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+}
+
+.pedido-card__estado {
+  background: var(--color-teal);
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.72rem;
+}
+
+.pedido-card__item {
+  font-size: 0.82rem;
+  color: var(--color-texto-suave);
+  display: flex;
+  justify-content: space-between;
+  padding: 3px 0;
+}
+
+/* =========================================================
+   ESTADOS VACÍOS / UTILIDAD
+   ========================================================= */
+
+.estado-vacio {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--color-texto-suave);
+  font-size: 0.9rem;
+}
+
+.footer {
+  border-top: 1px solid var(--color-borde);
+  padding: 24px;
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--color-texto-suave);
+}
+
+@media (max-width: 720px) {
+  .hero__inner {
+    grid-template-columns: 1fr;
+  }
+  .hero__imagen-slot {
+    order: -1;
+    aspect-ratio: 16/9;
+  }
+  .buscador {
+    display: none;
+  }
+}

@@ -1,0 +1,513 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+
+body {
+  font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+  font-size: 14px;
+}
+
+.mono {
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+/* =========================================================
+   PANTALLA DE LOGIN ADMIN
+   ========================================================= */
+
+.login-admin {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-texto);
+  padding: 20px;
+}
+
+.login-admin__caja {
+  background: var(--color-blanco);
+  border-radius: var(--radio-md);
+  padding: 34px 32px;
+  width: 100%;
+  max-width: 380px;
+}
+
+.login-admin__marca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+/* ---------------------------------------------------------
+   INSERCIÓN DE LOGO (login admin)
+   Reemplaza el contenido de .login-admin__logo por:
+   <img src="/img/logo.png" alt="Mercado VIVA" style="height:30px;">
+   --------------------------------------------------------- */
+.login-admin__logo {
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  background: var(--color-primario);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.login-admin__titulo {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-texto-suave);
+  margin: 0 0 26px;
+}
+
+.login-admin h1 {
+  font-size: 1.3rem;
+  margin: 0 0 4px;
+}
+
+.login-admin p.subt {
+  font-size: 0.82rem;
+  color: var(--color-texto-suave);
+  margin: 0 0 22px;
+}
+
+.tabs-admin {
+  display: flex;
+  border-bottom: 1px solid var(--color-borde);
+  margin-bottom: 20px;
+}
+
+.tabs-admin button {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 10px 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-texto-suave);
+  border-bottom: 2px solid transparent;
+}
+
+.tabs-admin button.activo {
+  color: var(--color-texto);
+  border-bottom-color: var(--color-coral);
+}
+
+.campo-admin {
+  margin-bottom: 14px;
+}
+
+.campo-admin label {
+  display: block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-texto-suave);
+  margin-bottom: 6px;
+}
+
+.campo-admin input, .campo-admin select, .campo-admin textarea {
+  width: 100%;
+  padding: 9px 11px;
+  border: 1.5px solid var(--color-borde);
+  border-radius: 4px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.86rem;
+  background: var(--color-fondo);
+  color: var(--color-texto);
+}
+
+.campo-admin input:focus, .campo-admin select:focus, .campo-admin textarea:focus {
+  outline: none;
+  border-color: var(--color-texto);
+  background: var(--color-blanco);
+}
+
+.campo-admin-grupo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.btn-admin {
+  border: none;
+  border-radius: 4px;
+  padding: 10px 16px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  font-family: 'IBM Plex Sans', sans-serif;
+  cursor: pointer;
+}
+
+.btn-admin--primario {
+  background: var(--color-texto);
+  color: var(--color-primario);
+  width: 100%;
+}
+
+.btn-admin--coral {
+  background: var(--color-coral);
+  color: white;
+}
+
+.btn-admin--fantasma {
+  background: none;
+  border: 1.5px solid var(--color-borde);
+  color: var(--color-texto);
+}
+
+.error-admin {
+  background: #FCEAE3;
+  color: #A34321;
+  padding: 9px 11px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  margin-bottom: 14px;
+  display: none;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.error-admin.visible { display: block; }
+
+/* =========================================================
+   LAYOUT DEL DASHBOARD
+   ========================================================= */
+
+.dashboard {
+  display: none;
+  min-height: 100vh;
+  grid-template-columns: 230px 1fr;
+}
+
+.dashboard.activo {
+  display: grid;
+}
+
+.sidebar {
+  background: var(--color-texto);
+  color: var(--color-fondo);
+  padding: 22px 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar__marca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+/* ---------------------------------------------------------
+   INSERCIÓN DE LOGO (sidebar del dashboard)
+   Reemplaza el contenido de .sidebar__logo por:
+   <img src="/img/logo.png" alt="Mercado VIVA" style="height:26px;">
+   --------------------------------------------------------- */
+.sidebar__logo {
+  width: 26px;
+  height: 26px;
+  border-radius: 5px;
+  background: var(--color-primario);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-family: 'IBM Plex Mono', monospace;
+  color: var(--color-texto);
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+.sidebar__nombre {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.sidebar__tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(239, 247, 243, 0.45);
+  margin: 0 0 30px;
+}
+
+.sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar__nav button {
+  text-align: left;
+  background: none;
+  border: none;
+  color: rgba(239, 247, 243, 0.7);
+  padding: 10px 12px;
+  border-radius: 5px;
+  font-size: 0.84rem;
+  font-family: 'IBM Plex Sans', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.sidebar__nav button.activo {
+  background: rgba(239, 247, 243, 0.1);
+  color: var(--color-fondo);
+  font-weight: 600;
+}
+
+.sidebar__nav-marcador {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-teal);
+  flex-shrink: 0;
+}
+
+.sidebar__footer {
+  margin-top: auto;
+  padding-top: 18px;
+  border-top: 1px solid rgba(239, 247, 243, 0.12);
+}
+
+.sidebar__sede {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  color: rgba(239, 247, 243, 0.55);
+  margin-bottom: 10px;
+}
+
+.sidebar__sede strong {
+  display: block;
+  color: var(--color-fondo);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.82rem;
+  margin-top: 2px;
+}
+
+/* =========================================================
+   CONTENIDO PRINCIPAL
+   ========================================================= */
+
+.contenido {
+  padding: 26px 32px 60px;
+}
+
+.contenido__topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 26px;
+}
+
+.contenido__titulo h1 {
+  font-size: 1.3rem;
+  margin: 0 0 3px;
+}
+
+.contenido__titulo p {
+  font-size: 0.8rem;
+  color: var(--color-texto-suave);
+  margin: 0;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+/* --- KPIs --- */
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.kpi {
+  background: var(--color-blanco);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-sm);
+  padding: 16px 18px;
+}
+
+.kpi__label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-texto-suave);
+  margin-bottom: 8px;
+}
+
+.kpi__valor {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.kpi--alerta .kpi__valor {
+  color: var(--color-coral);
+}
+
+/* --- Tabla de inventario --- */
+
+.panel-tabla {
+  background: var(--color-blanco);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-sm);
+  overflow: hidden;
+}
+
+.panel-tabla__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.panel-tabla__header h2 {
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+table.tabla-inventario {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla-inventario th {
+  text-align: left;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-texto-suave);
+  padding: 10px 18px;
+  background: var(--color-fondo);
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.tabla-inventario td {
+  padding: 11px 18px;
+  border-bottom: 1px solid var(--color-fondo);
+  font-size: 0.85rem;
+  vertical-align: middle;
+}
+
+.tabla-inventario tr:last-child td {
+  border-bottom: none;
+}
+
+.tabla-inventario img.miniatura {
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  object-fit: cover;
+  background: var(--color-fondo);
+}
+
+.celda-sku {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--color-texto-suave);
+}
+
+.badge-stock {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.78rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--color-teal);
+  color: var(--color-texto);
+}
+
+.badge-stock.bajo {
+  background: #FCEAE3;
+  color: var(--color-coral);
+}
+
+.badge-stock.agotado {
+  background: var(--color-coral);
+  color: white;
+}
+
+.input-cantidad-inline {
+  width: 64px;
+  padding: 5px 7px;
+  border: 1.5px solid var(--color-borde);
+  border-radius: 4px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.acciones-fila {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.btn-fila {
+  border: 1px solid var(--color-borde);
+  background: var(--color-blanco);
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--color-texto);
+}
+
+.btn-fila--guardar {
+  border-color: var(--color-texto);
+}
+
+.btn-fila--eliminar {
+  color: var(--color-coral);
+  border-color: #F5D2C2;
+}
+
+/* --- Formulario agregar producto --- */
+
+.panel-formulario {
+  background: var(--color-blanco);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-sm);
+  padding: 20px 22px;
+  max-width: 560px;
+}
+
+.panel-formulario h2 {
+  font-size: 0.95rem;
+  margin: 0 0 4px;
+}
+
+.panel-formulario p.ayuda {
+  font-size: 0.78rem;
+  color: var(--color-texto-suave);
+  margin: 0 0 18px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.mensaje-admin {
+  padding: 9px 12px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  margin-bottom: 14px;
+  display: none;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.mensaje-admin.exito { background: #EAF7ED; color: #1E6B3C; display: block; }
+.mensaje-admin.error { background: #FCEAE3; color: #A34321; display: block; }
+
+.vista { display: none; }
+.vista.activa { display: block; }
+
+@media (max-width: 900px) {
+  .dashboard.activo { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .kpis { grid-template-columns: repeat(2, 1fr); }
+}

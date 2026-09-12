@@ -1,0 +1,8 @@
+Coloca aquí tus archivos de imagen reales:
+
+- logo.png        -> logo pequeño (usado en topbar, login admin y sidebar)
+- banner-logo.png  -> versión grande para el banner principal del cliente
+
+Luego reemplaza los bloques marcados con "INSERCIÓN DE LOGO" en
+frontend/index.html y frontend/admin.html por las etiquetas <img>
+correspondientes, tal como indica cada comentario.

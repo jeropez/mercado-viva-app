@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mercado VIVA — Tu mercado, cerca de ti</title>
+<link rel="stylesheet" href="/css/variables.css">
+<link rel="stylesheet" href="/css/cliente.css">
+</head>
+<body>
+
+<!-- =========================================================
+     BARRA SUPERIOR
+     ========================================================= -->
+<header class="topbar">
+  <div class="topbar__inner">
+    <div class="marca">
+      <!-- INSERCIÓN DE LOGO (ver comentario de estilo en cliente.css → .marca__logo) -->
+      <div class="marca__logo">V</div>
+      <span class="marca__nombre">Mercado VIVA</span>
+    </div>
+
+    <div class="buscador">
+      <input type="text" id="input-busqueda" placeholder="Buscar arroz, leche, café...">
+      <button id="btn-buscar" type="button">Buscar</button>
+    </div>
+
+    <div class="topbar__acciones">
+      <div class="sede-selector">
+        <label for="select-sede">Comprando en</label>
+        <select id="select-sede"></select>
+      </div>
+
+      <button class="btn btn--texto" id="btn-cuenta">Iniciar sesión</button>
+      <button class="btn btn--texto" id="btn-mis-pedidos" style="display:none;">Mis pedidos</button>
+
+      <button class="btn btn--secundario btn--icono-carrito" id="btn-carrito">
+        Carrito
+        <span class="carrito-badge" id="carrito-contador" style="display:none;">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- =========================================================
+     HERO / BANNER PRINCIPAL
+     ========================================================= -->
+<section class="hero">
+  <div class="hero__inner">
+    <div class="hero__texto">
+      <h1>El mercado de tu barrio, a un clic de distancia</h1>
+      <p>Precios claros, stock real y entrega directa desde la sede más cercana a ti.</p>
+      <button class="btn btn--primario" id="btn-hero-explorar" style="background:var(--color-texto); color:var(--color-primario);">Ver catálogo</button>
+    </div>
+
+    <!-- =====================================================
+         INSERCIÓN DE IMAGEN DEL LOGO EN EL BANNER PRINCIPAL
+         Reemplazar este div completo por:
+         <img src="/img/banner-logo.png" alt="Mercado VIVA">
+         ===================================================== -->
+    <div class="hero__imagen-slot">
+      Espacio reservado para el logo / imagen del banner principal
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     FILTROS DE CATEGORÍA
+     ========================================================= -->
+<div class="filtros" id="filtros-categoria">
+  <button class="chip activo" data-categoria="">Todas</button>
+</div>
+
+<!-- =========================================================
+     CATÁLOGO
+     ========================================================= -->
+<main class="catalogo">
+  <h2 class="catalogo__titulo" id="catalogo-titulo">Productos disponibles</h2>
+  <div class="grid-productos" id="grid-productos">
+    <!-- Las tarjetas de producto se generan dinámicamente desde cliente.js -->
+  </div>
+</main>
+
+<footer class="footer">
+  Mercado VIVA — Proyecto académico, Universidad de Medellín.
+</footer>
+
+<!-- =========================================================
+     PANEL DE CARRITO
+     ========================================================= -->
+<div class="overlay" id="overlay"></div>
+
+<aside class="panel-carrito" id="panel-carrito">
+  <div class="panel-carrito__header">
+    <h2>Tu carrito</h2>
+    <button class="panel-carrito__cerrar" id="btn-cerrar-carrito">&times;</button>
+  </div>
+  <div class="panel-carrito__items" id="carrito-items">
+    <div class="estado-vacio">Tu carrito está vacío.</div>
+  </div>
+  <div class="panel-carrito__resumen">
+    <div class="panel-carrito__total">
+      <span>Total</span>
+      <span id="carrito-total">$0</span>
+    </div>
+    <button class="btn btn--primario" style="width:100%;" id="btn-ir-a-pagar">Confirmar compra</button>
+  </div>
+</aside>
+
+<!-- =========================================================
+     MODAL: INICIAR SESIÓN / REGISTRO
+     ========================================================= -->
+<div class="modal-overlay" id="modal-cuenta">
+  <div class="modal">
+    <div class="modal__header">
+      <h2>Tu cuenta</h2>
+      <button class="modal__cerrar" data-cerrar-modal="modal-cuenta">&times;</button>
+    </div>
+
+    <div class="tabs">
+      <button class="activo" data-tab="login">Iniciar sesión</button>
+      <button data-tab="registro">Crear cuenta</button>
+    </div>
+
+    <div class="mensaje-error" id="error-cuenta"></div>
+
+    <!-- LOGIN -->
+    <form id="form-login" data-panel="login">
+      <div class="campo">
+        <label>Correo electrónico</label>
+        <input type="email" id="login-email" required>
+      </div>
+      <div class="campo">
+        <label>Contraseña</label>
+        <input type="password" id="login-password" required>
+      </div>
+      <button type="submit" class="btn btn--primario" style="width:100%;">Iniciar sesión</button>
+      <p style="text-align:center; font-size:0.8rem; margin-top:14px; color:var(--color-texto-suave);">
+        ¿Eres administrador de una sede? <a href="/admin" style="color:var(--color-coral); font-weight:600;">Ir al panel admin</a>
+      </p>
+    </form>
+
+    <!-- REGISTRO -->
+    <form id="form-registro" data-panel="registro" style="display:none;">
+      <div class="campo-grupo">
+        <div class="campo">
+          <label>Nombres</label>
+          <input type="text" id="reg-nombres" required>
+        </div>
+        <div class="campo">
+          <label>Apellidos</label>
+          <input type="text" id="reg-apellidos" required>
+        </div>
+      </div>
+      <div class="campo">
+        <label>Correo electrónico</label>
+        <input type="email" id="reg-email" required>
+      </div>
+      <div class="campo-grupo">
+        <div class="campo">
+          <label>Documento de identidad</label>
+          <input type="text" id="reg-documento" required>
+        </div>
+        <div class="campo">
+          <label>Teléfono</label>
+          <input type="text" id="reg-telefono">
+        </div>
+      </div>
+      <div class="campo">
+        <label>Dirección de residencia</label>
+        <input type="text" id="reg-direccion">
+      </div>
+      <div class="campo">
+        <label>Ciudad</label>
+        <input type="text" id="reg-ciudad">
+      </div>
+      <div class="campo">
+        <label>Contraseña</label>
+        <input type="password" id="reg-password" required minlength="6">
+      </div>
+      <button type="submit" class="btn btn--primario" style="width:100%;">Crear cuenta</button>
+    </form>
+  </div>
+</div>
+
+<!-- =========================================================
+     MODAL: CHECKOUT (facturación + residencia)
+     ========================================================= -->
+<div class="modal-overlay" id="modal-checkout">
+  <div class="modal modal--ancho">
+    <div class="modal__header">
+      <h2>Confirmar compra</h2>
+      <button class="modal__cerrar" data-cerrar-modal="modal-checkout">&times;</button>
+    </div>
+
+    <div class="mensaje-error" id="error-checkout"></div>
+
+    <form id="form-checkout">
+      <div class="form-seccion-titulo">Datos de facturación</div>
+      <div class="campo">
+        <label>Nombre completo para la factura</label>
+        <input type="text" id="chk-nombre-fact" required>
+      </div>
+      <div class="campo-grupo">
+        <div class="campo">
+          <label>Documento</label>
+          <input type="text" id="chk-doc-fact" required>
+        </div>
+        <div class="campo">
+          <label>Ciudad de facturación</label>
+          <input type="text" id="chk-ciudad-fact" required>
+        </div>
+      </div>
+      <div class="campo">
+        <label>Dirección de facturación</label>
+        <input type="text" id="chk-direccion-fact" required>
+      </div>
+
+      <div class="form-seccion-titulo">Datos de residencia / entrega</div>
+      <div class="campo">
+        <label>Dirección de entrega</label>
+        <input type="text" id="chk-direccion-envio" required>
+      </div>
+      <div class="campo-grupo">
+        <div class="campo">
+          <label>Ciudad de entrega</label>
+          <input type="text" id="chk-ciudad-envio" required>
+        </div>
+        <div class="campo">
+          <label>Teléfono de contacto</label>
+          <input type="text" id="chk-telefono" required>
+        </div>
+      </div>
+
+      <div class="panel-carrito__total" style="margin-top:18px;">
+        <span>Total a pagar</span>
+        <span id="checkout-total">$0</span>
+      </div>
+
+      <button type="submit" class="btn btn--primario" style="width:100%;">Confirmar y pagar</button>
+    </form>
+  </div>
+</div>
+
+<!-- =========================================================
+     MODAL: PRODUCTO SIN STOCK → ALTERNATIVAS
+     ========================================================= -->
+<div class="modal-overlay" id="modal-alternativas">
+  <div class="modal">
+    <div class="modal__header">
+      <h2>No hay stock suficiente</h2>
+      <button class="modal__cerrar" data-cerrar-modal="modal-alternativas">&times;</button>
+    </div>
+    <p id="alternativas-mensaje" style="font-size:0.88rem; color:var(--color-texto-suave); margin-top:0;"></p>
+    <div id="alternativas-lista"></div>
+    <button class="btn btn--secundario" style="width:100%; margin-top:8px;" data-cerrar-modal="modal-alternativas">Entendido</button>
+  </div>
+</div>
+
+<!-- =========================================================
+     MODAL: MIS PEDIDOS
+     ========================================================= -->
+<div class="modal-overlay" id="modal-pedidos">
+  <div class="modal modal--ancho">
+    <div class="modal__header">
+      <h2>Mis pedidos</h2>
+      <button class="modal__cerrar" data-cerrar-modal="modal-pedidos">&times;</button>
+    </div>
+    <div id="lista-pedidos"><div class="estado-vacio">Aún no tienes pedidos.</div></div>
+  </div>
+</div>
+
+<script src="/js/cliente.js"></script>
+</body>
+</html>

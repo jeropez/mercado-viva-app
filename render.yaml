@@ -1,0 +1,34 @@
+# Configuración de despliegue en Render ("Infraestructura como código").
+#
+# Cómo usarla:
+#   1. Sube este proyecto a un repositorio de GitHub.
+#   2. En Render, ve a "New" → "Blueprint" y selecciona el repositorio.
+#   3. Render lee este archivo y crea automáticamente el Web Service
+#      y la base de datos PostgreSQL, ya conectados entre sí.
+#
+# Si prefieres configurarlo manualmente desde la interfaz de Render en
+# lugar de usar este archivo, sigue las instrucciones del README.md.
+
+databases:
+  - name: mercado-viva-db
+    plan: free
+    databaseName: mercado_viva
+    user: mercado_viva
+
+services:
+  - type: web
+    name: mercado-viva-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: mercado-viva-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ALLOWED_ORIGINS
+        value: "*"

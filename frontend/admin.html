@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mercado VIVA — Panel Administrador</title>
+<link rel="stylesheet" href="/css/variables.css">
+<link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+
+<!-- =========================================================
+     PANTALLA DE LOGIN / REGISTRO ADMIN
+     ========================================================= -->
+<div class="login-admin" id="pantalla-login">
+  <div class="login-admin__caja">
+    <div class="login-admin__marca">
+      <!-- INSERCIÓN DE LOGO (ver comentario en admin.css → .login-admin__logo) -->
+      <div class="login-admin__logo">V</div>
+      <strong>Mercado VIVA</strong>
+    </div>
+    <p class="login-admin__titulo">panel_administrador // v1.0</p>
+
+    <h1>Acceso administrativo</h1>
+    <p class="subt">Gestión de catálogo e inventario por sede.</p>
+
+    <div class="tabs-admin">
+      <button class="activo" data-tab="login">Iniciar sesión</button>
+      <button data-tab="registro">Crear cuenta admin</button>
+    </div>
+
+    <div class="error-admin" id="error-login-admin"></div>
+
+    <!-- LOGIN -->
+    <form id="form-login-admin" data-panel="login">
+      <div class="campo-admin">
+        <label>correo</label>
+        <input type="email" id="admin-login-email" required>
+      </div>
+      <div class="campo-admin">
+        <label>contraseña</label>
+        <input type="password" id="admin-login-password" required>
+      </div>
+      <button type="submit" class="btn-admin btn-admin--primario">Ingresar</button>
+    </form>
+
+    <!-- REGISTRO -->
+    <form id="form-registro-admin" data-panel="registro" style="display:none;">
+      <div class="campo-admin-grupo">
+        <div class="campo-admin">
+          <label>nombres</label>
+          <input type="text" id="admin-reg-nombres" required>
+        </div>
+        <div class="campo-admin">
+          <label>apellidos</label>
+          <input type="text" id="admin-reg-apellidos" required>
+        </div>
+      </div>
+      <div class="campo-admin">
+        <label>correo</label>
+        <input type="email" id="admin-reg-email" required>
+      </div>
+      <div class="campo-admin-grupo">
+        <div class="campo-admin">
+          <label>documento</label>
+          <input type="text" id="admin-reg-documento" required>
+        </div>
+        <div class="campo-admin">
+          <label>teléfono</label>
+          <input type="text" id="admin-reg-telefono">
+        </div>
+      </div>
+      <div class="campo-admin">
+        <label>sede que vas a administrar</label>
+        <select id="admin-reg-sede" required></select>
+      </div>
+      <div class="campo-admin">
+        <label>contraseña</label>
+        <input type="password" id="admin-reg-password" required minlength="6">
+      </div>
+      <button type="submit" class="btn-admin btn-admin--primario">Crear cuenta y continuar</button>
+    </form>
+
+    <p style="text-align:center; font-size:0.78rem; margin-top:18px; color:var(--color-texto-suave);">
+      ¿Eres cliente? <a href="/" style="color:var(--color-coral); font-weight:600;">Ir a la tienda</a>
+    </p>
+  </div>
+</div>
+
+<!-- =========================================================
+     DASHBOARD
+     ========================================================= -->
+<div class="dashboard" id="dashboard">
+
+  <aside class="sidebar">
+    <div class="sidebar__marca">
+      <!-- INSERCIÓN DE LOGO (sidebar) -->
+      <div class="sidebar__logo">V</div>
+      <span class="sidebar__nombre">Mercado VIVA</span>
+    </div>
+    <p class="sidebar__tag">admin_console</p>
+
+    <nav class="sidebar__nav">
+      <button class="activo" data-vista="inventario">
+        <span class="sidebar__nav-marcador"></span> Inventario
+      </button>
+      <button data-vista="agregar">
+        <span class="sidebar__nav-marcador"></span> Agregar producto
+      </button>
+    </nav>
+
+    <div class="sidebar__footer">
+      <div class="sidebar__sede">
+        sede activa
+        <strong id="sidebar-sede-nombre">—</strong>
+      </div>
+      <button class="btn-admin btn-admin--fantasma" style="width:100%; color:var(--color-fondo); border-color:rgba(239,247,243,0.25);" id="btn-cerrar-sesion-admin">Cerrar sesión</button>
+    </div>
+  </aside>
+
+  <main class="contenido">
+
+    <!-- ---------- VISTA: INVENTARIO ---------- -->
+    <section class="vista activa" id="vista-inventario">
+      <div class="contenido__topbar">
+        <div class="contenido__titulo">
+          <h1>Inventario</h1>
+          <p id="admin-usuario-label">// cargando sesión...</p>
+        </div>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi">
+          <div class="kpi__label">Productos activos</div>
+          <div class="kpi__valor" id="kpi-total">0</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi__label">Unidades en stock</div>
+          <div class="kpi__valor" id="kpi-unidades">0</div>
+        </div>
+        <div class="kpi kpi--alerta">
+          <div class="kpi__label">Agotados</div>
+          <div class="kpi__valor" id="kpi-agotados">0</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi__label">Valor del inventario</div>
+          <div class="kpi__valor" id="kpi-valor" style="font-size:1.1rem;">$0</div>
+        </div>
+      </div>
+
+      <div class="mensaje-admin" id="mensaje-inventario"></div>
+
+      <div class="panel-tabla">
+        <div class="panel-tabla__header">
+          <h2>Catálogo de tu sede</h2>
+        </div>
+        <table class="tabla-inventario">
+          <thead>
+            <tr>
+              <th></th>
+              <th>SKU</th>
+              <th>Producto</th>
+              <th>Categoría</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-inventario-body">
+            <!-- filas generadas por admin.js -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ---------- VISTA: AGREGAR PRODUCTO ---------- -->
+    <section class="vista" id="vista-agregar">
+      <div class="contenido__topbar">
+        <div class="contenido__titulo">
+          <h1>Agregar producto</h1>
+          <p>// se agrega al catálogo de tu sede</p>
+        </div>
+      </div>
+
+      <div class="panel-formulario">
+        <h2>Nuevo producto</h2>
+        <p class="ayuda">campos obligatorios: sku, nombre, precio, cantidad</p>
+
+        <div class="mensaje-admin" id="mensaje-agregar"></div>
+
+        <form id="form-agregar-producto">
+          <div class="campo-admin-grupo">
+            <div class="campo-admin">
+              <label>sku</label>
+              <input type="text" id="prod-sku" required>
+            </div>
+            <div class="campo-admin">
+              <label>categoría</label>
+              <input type="text" id="prod-categoria" placeholder="Abarrotes, Lácteos...">
+            </div>
+          </div>
+          <div class="campo-admin">
+            <label>nombre</label>
+            <input type="text" id="prod-nombre" required>
+          </div>
+          <div class="campo-admin">
+            <label>descripción</label>
+            <textarea id="prod-descripcion" rows="3"></textarea>
+          </div>
+          <div class="campo-admin-grupo">
+            <div class="campo-admin">
+              <label>precio (COP)</label>
+              <input type="number" id="prod-precio" min="1" step="1" required>
+            </div>
+            <div class="campo-admin">
+              <label>cantidad inicial</label>
+              <input type="number" id="prod-cantidad" min="0" step="1" required>
+            </div>
+          </div>
+          <div class="campo-admin">
+            <label>url de la imagen</label>
+            <!--
+              INSERCIÓN DE IMAGEN DE PRODUCTO:
+              El MVP guarda un enlace (URL) a la imagen, no un archivo subido,
+              porque Render no ofrece almacenamiento de archivos persistente
+              por defecto. Aquí se pega el link directo a la foto del producto.
+            -->
+            <input type="url" id="prod-imagen" placeholder="https://...">
+          </div>
+          <button type="submit" class="btn-admin btn-admin--primario">Agregar al catálogo</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="/js/admin.js"></script>
+</body>
+</html>
