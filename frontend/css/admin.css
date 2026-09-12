@@ -506,6 +506,61 @@ table.tabla-inventario {
 .vista { display: none; }
 .vista.activa { display: block; }
 
+/* =========================================================
+   MODAL: EDITAR PRODUCTO
+   ========================================================= */
+
+.modal-overlay-admin {
+  position: fixed;
+  inset: 0;
+  background: rgba(62, 51, 58, 0.55);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-overlay-admin.visible {
+  display: flex;
+}
+
+.modal-admin {
+  background: var(--color-blanco);
+  border-radius: var(--radio-sm);
+  width: 100%;
+  max-width: 480px;
+  max-height: 88vh;
+  overflow-y: auto;
+  padding: 22px 24px 24px;
+}
+
+.modal-admin__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.modal-admin__header h2 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.modal-admin__cerrar {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  color: var(--color-texto-suave);
+  cursor: pointer;
+}
+
+.btn-fila--editar {
+  border-color: var(--color-texto);
+  color: var(--color-texto);
+}
+
 @media (max-width: 900px) {
   .dashboard.activo { grid-template-columns: 1fr; }
   .sidebar { display: none; }

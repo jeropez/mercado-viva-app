@@ -205,6 +205,7 @@ function renderizarInventario() {
         <td>
           <div class="acciones-fila">
             <button class="btn-fila btn-fila--guardar" data-guardar="${p.id}">Guardar</button>
+            <button class="btn-fila btn-fila--editar" data-editar="${p.id}">Editar</button>
             <button class="btn-fila btn-fila--eliminar" data-eliminar="${p.id}">Eliminar</button>
           </div>
         </td>
@@ -218,7 +219,66 @@ function renderizarInventario() {
   cuerpo.querySelectorAll("[data-eliminar]").forEach((btn) => {
     btn.addEventListener("click", () => eliminarProducto(parseInt(btn.dataset.eliminar, 10)));
   });
+  cuerpo.querySelectorAll("[data-editar]").forEach((btn) => {
+    btn.addEventListener("click", () => abrirModalEditar(parseInt(btn.dataset.editar, 10)));
+  });
 }
+
+// ---------------------------------------------------------------
+// Editar producto (nombre, categoría, precio, cantidad, imagen)
+// ---------------------------------------------------------------
+
+function abrirModalEditar(productoId) {
+  const producto = inventario.find((p) => p.id === productoId);
+  if (!producto) return;
+
+  document.getElementById("edit-producto-id").value = producto.id;
+  document.getElementById("edit-sku").value = producto.sku;
+  document.getElementById("edit-categoria").value = producto.categoria || "";
+  document.getElementById("edit-nombre").value = producto.nombre;
+  document.getElementById("edit-descripcion").value = producto.descripcion || "";
+  document.getElementById("edit-precio").value = producto.precio;
+  document.getElementById("edit-cantidad").value = producto.cantidad;
+  document.getElementById("edit-imagen").value = producto.imagen_url || "";
+
+  document.getElementById("mensaje-editar").className = "mensaje-admin";
+  document.getElementById("modal-editar-producto").classList.add("visible");
+}
+
+function cerrarModalEditar() {
+  document.getElementById("modal-editar-producto").classList.remove("visible");
+}
+
+document.getElementById("btn-cerrar-editar").addEventListener("click", cerrarModalEditar);
+document.getElementById("modal-editar-producto").addEventListener("click", (e) => {
+  if (e.target.id === "modal-editar-producto") cerrarModalEditar();
+});
+
+document.getElementById("form-editar-producto").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const productoId = parseInt(document.getElementById("edit-producto-id").value, 10);
+
+  try {
+    await apiFetch(`/api/admin/productos/${productoId}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        nombre: document.getElementById("edit-nombre").value,
+        categoria: document.getElementById("edit-categoria").value || "General",
+        descripcion: document.getElementById("edit-descripcion").value || null,
+        precio: parseFloat(document.getElementById("edit-precio").value),
+        cantidad: parseInt(document.getElementById("edit-cantidad").value, 10),
+        imagen_url: document.getElementById("edit-imagen").value || null,
+      }),
+    });
+    cerrarModalEditar();
+    mostrarMensaje("mensaje-inventario", "Producto actualizado correctamente.", "exito");
+    await cargarInventario();
+  } catch (err) {
+    const el = document.getElementById("mensaje-editar");
+    el.textContent = err.message;
+    el.className = "mensaje-admin error";
+  }
+});
 
 async function guardarCantidad(productoId) {
   const input = document.querySelector(`[data-input-cantidad="${productoId}"]`);

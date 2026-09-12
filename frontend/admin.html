@@ -236,6 +236,57 @@
   </main>
 </div>
 
+<!-- =========================================================
+     MODAL: EDITAR PRODUCTO
+     ========================================================= -->
+<div class="modal-overlay-admin" id="modal-editar-producto">
+  <div class="modal-admin">
+    <div class="modal-admin__header">
+      <h2>Editar producto</h2>
+      <button class="modal-admin__cerrar" id="btn-cerrar-editar">&times;</button>
+    </div>
+
+    <div class="mensaje-admin" id="mensaje-editar"></div>
+
+    <form id="form-editar-producto">
+      <input type="hidden" id="edit-producto-id">
+      <div class="campo-admin-grupo">
+        <div class="campo-admin">
+          <label>sku (no editable)</label>
+          <input type="text" id="edit-sku" disabled>
+        </div>
+        <div class="campo-admin">
+          <label>categoría</label>
+          <input type="text" id="edit-categoria">
+        </div>
+      </div>
+      <div class="campo-admin">
+        <label>nombre</label>
+        <input type="text" id="edit-nombre" required>
+      </div>
+      <div class="campo-admin">
+        <label>descripción</label>
+        <textarea id="edit-descripcion" rows="3"></textarea>
+      </div>
+      <div class="campo-admin-grupo">
+        <div class="campo-admin">
+          <label>precio (COP)</label>
+          <input type="number" id="edit-precio" min="1" step="1" required>
+        </div>
+        <div class="campo-admin">
+          <label>cantidad</label>
+          <input type="number" id="edit-cantidad" min="0" step="1" required>
+        </div>
+      </div>
+      <div class="campo-admin">
+        <label>url de la imagen</label>
+        <input type="url" id="edit-imagen" placeholder="https://...">
+      </div>
+      <button type="submit" class="btn-admin btn-admin--primario">Guardar cambios</button>
+    </form>
+  </div>
+</div>
+
 <script src="/js/admin.js"></script>
 </body>
 </html>
