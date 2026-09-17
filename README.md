@@ -65,38 +65,6 @@ la primera vez.
 > Si ves un error de `pip` por permisos en Windows, usa un entorno virtual
 > (`python -m venv venv` → `venv\Scripts\activate`) antes de instalar.
 
-## Insertar el logo real
-
-Hay 4 puntos marcados en el código con comentarios `INSERCIÓN DE LOGO`:
-
-1. `frontend/index.html` → barra superior del cliente (`.marca__logo`)
-2. `frontend/index.html` → banner principal, imagen grande (`.hero__imagen-slot`)
-3. `frontend/admin.html` → pantalla de login del admin (`.login-admin__logo`)
-4. `frontend/admin.html` → sidebar del dashboard (`.sidebar__logo`)
-
-Coloca tu archivo de logo en `frontend/img/logo.png` (y uno más grande para
-el banner si quieres, ej. `frontend/img/banner-logo.png`), y en cada punto
-reemplaza el `<div>` marcado por un `<img src="/img/logo.png" ...>`, tal como
-indica el comentario en ese lugar del código.
-
-Las imágenes de producto no se suben como archivo: el catálogo guarda una
-**URL** de imagen (campo "url de la imagen" al crear un producto desde el
-panel admin), porque Render no ofrece almacenamiento de archivos persistente
-por defecto.
-
-## Paleta de colores
-
-| Variable CSS | Color | Uso |
-|---|---|---|
-| `--color-texto` | `#3E333A` | Texto, sidebar del admin |
-| `--color-primario` | `#F5F06E` | Color primario, banner principal |
-| `--color-teal` | `#A0E0DC` | Acentos informativos, badges |
-| `--color-fondo` | `#EFF7F3` | Fondo general |
-| `--color-coral` | `#F5865A` | Acciones destacadas, alertas |
-
-Definida una sola vez en `frontend/css/variables.css`.
-
----
 
 ## Despliegue en Render
 
