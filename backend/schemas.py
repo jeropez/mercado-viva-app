@@ -39,7 +39,9 @@ class RegistroAdminRequest(BaseModel):
     documento: str = Field(..., min_length=4, max_length=30)
     telefono: Optional[str] = Field(None, max_length=30)
     password: str = Field(..., min_length=6, max_length=100)
-    sede_id: int = Field(..., gt=0, description="Sede que este administrador va a gestionar")
+    # No se pide sede aquí: la sede (o el hecho de ser superadmin sin sede
+    # fija) la determina la lista blanca de correos autorizados, no el
+    # formulario. Así nadie puede autoasignarse una sede al registrarse.
 
 
 class LoginRequest(BaseModel):
@@ -49,7 +51,7 @@ class LoginRequest(BaseModel):
 
 class UsuarioOut(BaseModel):
     id: int
-    tipo: str
+    tipo: str  # "cliente" | "admin" | "superadmin"
     nombres: str
     apellidos: str
     email: str
@@ -57,7 +59,7 @@ class UsuarioOut(BaseModel):
     telefono: Optional[str] = None
     direccion: Optional[str] = None
     ciudad: Optional[str] = None
-    sede_id: Optional[int] = None
+    sede_id: Optional[int] = None  # null para superadmin (elige sede en cada sesión)
 
     class Config:
         from_attributes = True

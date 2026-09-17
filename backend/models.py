@@ -26,6 +26,31 @@ class Sede(Base):
     administradores = relationship("Usuario", back_populates="sede")
 
 
+class CorreoAutorizado(Base):
+    """
+    Lista blanca de correos que pueden crear una cuenta de administrador.
+
+    Esta tabla NO se llena desde la interfaz web a propósito: se inserta
+    manualmente en la base de datos (por ejemplo, con el script
+    gestionar_admins.py o directamente por SQL), para que solo el equipo
+    de Mercado VIVA decida quién puede volverse administrador.
+
+    - rol = "admin": debe tener sede_id asignado (gestiona solo esa sede).
+    - rol = "superadmin": sede_id queda en null; elige la sede en cada
+      sesión desde el panel, y puede cambiarla cuando quiera.
+    """
+    __tablename__ = "correos_autorizados"
+
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String(160), unique=True, nullable=False, index=True)
+    rol = Column(String(20), nullable=False, default="admin")  # "admin" | "superadmin"
+    sede_id = Column(Integer, ForeignKey("sedes.id"), nullable=True)
+    notas = Column(String(200), nullable=True)  # ej: "Encargado de Laureles"
+    creado_en = Column(DateTime, default=datetime.utcnow)
+
+    sede = relationship("Sede")
+
+
 class Usuario(Base):
     __tablename__ = "usuarios"
 

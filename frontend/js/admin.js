@@ -7,6 +7,8 @@ const API = "";
 let token = localStorage.getItem("mv_admin_token");
 let admin = JSON.parse(localStorage.getItem("mv_admin_usuario") || "null");
 let inventario = [];
+let sedes = [];
+let sedeActivaId = null; // sede sobre la que se está operando ahora mismo
 
 function guardarSesionAdmin() {
   if (token) {
@@ -31,6 +33,15 @@ async function apiFetch(ruta, opciones = {}) {
   return data;
 }
 
+// Agrega ?sede_id=X a las rutas del módulo admin. Para un admin normal el
+// backend ignora este parámetro (siempre usa su propia sede); para un
+// superadmin es obligatorio, así que siempre lo mandamos si lo tenemos.
+function rutaAdmin(ruta) {
+  if (!sedeActivaId) return ruta;
+  const separador = ruta.includes("?") ? "&" : "?";
+  return `${ruta}${separador}sede_id=${sedeActivaId}`;
+}
+
 function formatoPrecio(valor) {
   return new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP", maximumFractionDigits: 0 }).format(valor);
 }
@@ -49,16 +60,6 @@ document.querySelectorAll(".tabs-admin button").forEach((tab) => {
   });
 });
 
-async function cargarSedesParaRegistro() {
-  try {
-    const sedes = await apiFetch("/api/auth/sedes");
-    const select = document.getElementById("admin-reg-sede");
-    select.innerHTML = sedes.map((s) => `<option value="${s.id}">${s.nombre} — ${s.ciudad}</option>`).join("");
-  } catch (err) {
-    console.error("No se pudieron cargar las sedes", err);
-  }
-}
-
 document.getElementById("form-login-admin").addEventListener("submit", async (e) => {
   e.preventDefault();
   const errorBox = document.getElementById("error-login-admin");
@@ -71,7 +72,7 @@ document.getElementById("form-login-admin").addEventListener("submit", async (e)
         password: document.getElementById("admin-login-password").value,
       }),
     });
-    if (data.usuario.tipo !== "admin") {
+    if (data.usuario.tipo !== "admin" && data.usuario.tipo !== "superadmin") {
       errorBox.textContent = "Esta cuenta es de cliente. Usa la tienda.";
       errorBox.classList.add("visible");
       return;
@@ -99,7 +100,6 @@ document.getElementById("form-registro-admin").addEventListener("submit", async 
         email: document.getElementById("admin-reg-email").value,
         documento: document.getElementById("admin-reg-documento").value,
         telefono: document.getElementById("admin-reg-telefono").value || null,
-        sede_id: parseInt(document.getElementById("admin-reg-sede").value, 10),
         password: document.getElementById("admin-reg-password").value,
       }),
     });
@@ -116,6 +116,7 @@ document.getElementById("form-registro-admin").addEventListener("submit", async 
 document.getElementById("btn-cerrar-sesion-admin").addEventListener("click", () => {
   token = null;
   admin = null;
+  sedeActivaId = null;
   guardarSesionAdmin();
   document.getElementById("dashboard").classList.remove("activo");
   document.getElementById("pantalla-login").style.display = "flex";
@@ -137,17 +138,46 @@ document.querySelectorAll(".sidebar__nav button").forEach((btn) => {
 async function mostrarDashboard() {
   document.getElementById("pantalla-login").style.display = "none";
   document.getElementById("dashboard").classList.add("activo");
-  document.getElementById("admin-usuario-label").textContent = `// sesión: ${admin.nombres} ${admin.apellidos} · ${admin.email}`;
 
-  try {
-    const sedes = await apiFetch("/api/auth/sedes");
-    const miSede = sedes.find((s) => s.id === admin.sede_id);
-    document.getElementById("sidebar-sede-nombre").textContent = miSede ? miSede.nombre : `Sede #${admin.sede_id}`;
-  } catch {
-    document.getElementById("sidebar-sede-nombre").textContent = `Sede #${admin.sede_id}`;
+  const etiquetaRol = admin.tipo === "superadmin" ? " · superadmin" : "";
+  document.getElementById("admin-usuario-label").textContent =
+    `// sesión: ${admin.nombres} ${admin.apellidos} · ${admin.email}${etiquetaRol}`;
+
+  sedes = await apiFetch("/api/auth/sedes").catch(() => []);
+
+  if (admin.tipo === "superadmin") {
+    // El superadmin elige la sede; recordamos la última elegida en este navegador.
+    document.getElementById("selector-sede-superadmin").style.display = "block";
+    const select = document.getElementById("select-sede-superadmin");
+    select.innerHTML = sedes.map((s) => `<option value="${s.id}">${s.nombre}</option>`).join("");
+
+    const guardada = localStorage.getItem("mv_superadmin_sede_id");
+    sedeActivaId = guardada && sedes.some((s) => String(s.id) === guardada)
+      ? parseInt(guardada, 10)
+      : sedes[0]?.id;
+
+    select.value = sedeActivaId;
+    actualizarNombreSedeActiva();
+
+    select.onchange = () => {
+      sedeActivaId = parseInt(select.value, 10);
+      localStorage.setItem("mv_superadmin_sede_id", sedeActivaId);
+      actualizarNombreSedeActiva();
+      cargarInventario();
+    };
+  } else {
+    // Admin normal: sede fija, sin selector.
+    document.getElementById("selector-sede-superadmin").style.display = "none";
+    sedeActivaId = admin.sede_id;
+    actualizarNombreSedeActiva();
   }
 
   cargarInventario();
+}
+
+function actualizarNombreSedeActiva() {
+  const sede = sedes.find((s) => s.id === sedeActivaId);
+  document.getElementById("sidebar-sede-nombre").textContent = sede ? sede.nombre : `Sede #${sedeActivaId}`;
 }
 
 // ---------------------------------------------------------------
@@ -156,7 +186,7 @@ async function mostrarDashboard() {
 
 async function cargarInventario() {
   try {
-    inventario = await apiFetch("/api/admin/inventario");
+    inventario = await apiFetch(rutaAdmin("/api/admin/inventario"));
     renderizarInventario();
     renderizarKPIs();
   } catch (err) {
@@ -181,7 +211,7 @@ function renderizarInventario() {
   const activos = inventario.filter((p) => p.activo);
 
   if (activos.length === 0) {
-    cuerpo.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:var(--color-texto-suave);">Aún no hay productos en tu sede. Agrega el primero desde el menú "Agregar producto".</td></tr>`;
+    cuerpo.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:var(--color-texto-suave);">Aún no hay productos en esta sede. Agrega el primero desde el menú "Agregar producto".</td></tr>`;
     return;
   }
 
@@ -259,7 +289,7 @@ document.getElementById("form-editar-producto").addEventListener("submit", async
   const productoId = parseInt(document.getElementById("edit-producto-id").value, 10);
 
   try {
-    await apiFetch(`/api/admin/productos/${productoId}`, {
+    await apiFetch(rutaAdmin(`/api/admin/productos/${productoId}`), {
       method: "PUT",
       body: JSON.stringify({
         nombre: document.getElementById("edit-nombre").value,
@@ -290,7 +320,7 @@ async function guardarCantidad(productoId) {
   }
 
   try {
-    await apiFetch(`/api/admin/productos/${productoId}`, {
+    await apiFetch(rutaAdmin(`/api/admin/productos/${productoId}`), {
       method: "PUT",
       body: JSON.stringify({ cantidad: nuevaCantidad }),
     });
@@ -306,7 +336,7 @@ async function eliminarProducto(productoId) {
   if (!confirm(`¿Eliminar "${producto?.nombre}" del catálogo? Los pedidos ya realizados no se ven afectados.`)) return;
 
   try {
-    await apiFetch(`/api/admin/productos/${productoId}`, { method: "DELETE" });
+    await apiFetch(rutaAdmin(`/api/admin/productos/${productoId}`), { method: "DELETE" });
     mostrarMensaje("mensaje-inventario", "Producto eliminado del catálogo.", "exito");
     await cargarInventario();
   } catch (err) {
@@ -321,7 +351,7 @@ async function eliminarProducto(productoId) {
 document.getElementById("form-agregar-producto").addEventListener("submit", async (e) => {
   e.preventDefault();
   try {
-    await apiFetch("/api/admin/productos", {
+    await apiFetch(rutaAdmin("/api/admin/productos"), {
       method: "POST",
       body: JSON.stringify({
         sku: document.getElementById("prod-sku").value,
@@ -356,8 +386,7 @@ function mostrarMensaje(elementId, texto, tipo) {
 // Inicio
 // ---------------------------------------------------------------
 
-(async function init() {
-  await cargarSedesParaRegistro();
+(function init() {
   if (token && admin) {
     mostrarDashboard();
   }

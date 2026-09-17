@@ -16,7 +16,7 @@
   <div class="login-admin__caja">
     <div class="login-admin__marca">
       <!-- INSERCIÓN DE LOGO (ver comentario en admin.css → .login-admin__logo) -->
-      <div class="login-admin__logo">V</div>
+      <img src="/img/logo.png" alt="Mercado VIVA" style="height:30px;">
       <strong>Mercado VIVA</strong>
     </div>
     <p class="login-admin__titulo">panel_administrador // v1.0</p>
@@ -71,15 +71,16 @@
         </div>
       </div>
       <div class="campo-admin">
-        <label>sede que vas a administrar</label>
-        <select id="admin-reg-sede" required></select>
-      </div>
-      <div class="campo-admin">
         <label>contraseña</label>
         <input type="password" id="admin-reg-password" required minlength="6">
       </div>
       <button type="submit" class="btn-admin btn-admin--primario">Crear cuenta y continuar</button>
     </form>
+
+    <p style="font-size:0.72rem; color:var(--color-texto-suave); margin-top:14px; font-family:'IBM Plex Mono', monospace;">
+      // tu correo debe estar previamente autorizado por el equipo de Mercado VIVA.
+      la sede (o el rol de superadmin) se asigna automáticamente según esa autorización.
+    </p>
 
     <p style="text-align:center; font-size:0.78rem; margin-top:18px; color:var(--color-texto-suave);">
       ¿Eres cliente? <a href="/" style="color:var(--color-coral); font-weight:600;">Ir a la tienda</a>
@@ -95,7 +96,7 @@
   <aside class="sidebar">
     <div class="sidebar__marca">
       <!-- INSERCIÓN DE LOGO (sidebar) -->
-      <div class="sidebar__logo">V</div>
+      <img src="/img/logo.png" alt="Mercado VIVA" style="height:26px;">
       <span class="sidebar__nombre">Mercado VIVA</span>
     </div>
     <p class="sidebar__tag">admin_console</p>
@@ -114,6 +115,13 @@
         sede activa
         <strong id="sidebar-sede-nombre">—</strong>
       </div>
+
+      <!-- Solo visible para superadmin: puede cambiar de sede cuando quiera -->
+      <div class="campo-admin" id="selector-sede-superadmin" style="display:none; margin-bottom:12px;">
+        <label style="color:rgba(239,247,243,0.55);">cambiar sede (superadmin)</label>
+        <select id="select-sede-superadmin"></select>
+      </div>
+
       <button class="btn-admin btn-admin--fantasma" style="width:100%; color:var(--color-fondo); border-color:rgba(239,247,243,0.25);" id="btn-cerrar-sesion-admin">Cerrar sesión</button>
     </div>
   </aside>

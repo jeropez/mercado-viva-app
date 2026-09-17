@@ -76,6 +76,13 @@ def requerir_cliente(usuario: models.Usuario = Depends(obtener_usuario_actual)) 
 
 
 def requerir_admin(usuario: models.Usuario = Depends(obtener_usuario_actual)) -> models.Usuario:
-    if usuario.tipo != "admin":
+    """Admin normal o superadmin (ambos entran al panel de administración)."""
+    if usuario.tipo not in ("admin", "superadmin"):
         raise HTTPException(status_code=403, detail="Esta acción es exclusiva de administradores")
+    return usuario
+
+
+def requerir_superadmin(usuario: models.Usuario = Depends(obtener_usuario_actual)) -> models.Usuario:
+    if usuario.tipo != "superadmin":
+        raise HTTPException(status_code=403, detail="Esta acción es exclusiva del superadministrador")
     return usuario

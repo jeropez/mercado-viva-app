@@ -44,18 +44,35 @@ def registro_admin(datos: schemas.RegistroAdminRequest, db: Session = Depends(ge
     if existe:
         raise HTTPException(status_code=409, detail="Ya existe una cuenta con ese correo o documento")
 
-    sede = db.query(models.Sede).filter(models.Sede.id == datos.sede_id).first()
-    if sede is None:
-        raise HTTPException(status_code=404, detail="La sede seleccionada no existe")
+    # --- Lista blanca: el correo debe haber sido autorizado manualmente
+    #     en la base de datos (ver backend/gestionar_admins.py) ---
+    autorizado = db.query(models.CorreoAutorizado).filter(
+        models.CorreoAutorizado.email == datos.email
+    ).first()
+    if autorizado is None:
+        raise HTTPException(
+            status_code=403,
+            detail="Este correo no está autorizado para crear una cuenta de administrador. "
+                   "Contacta al equipo de Mercado VIVA para que lo agreguen a la lista autorizada.",
+        )
+
+    # La sede (o la ausencia de sede fija, si es superadmin) viene de la
+    # lista blanca, nunca de lo que el formulario envíe.
+    if autorizado.rol == "admin" and autorizado.sede_id is None:
+        raise HTTPException(
+            status_code=500,
+            detail="Este correo está autorizado como admin pero no tiene una sede asignada. "
+                   "Contacta al equipo técnico.",
+        )
 
     usuario = models.Usuario(
-        tipo="admin",
+        tipo=autorizado.rol,  # "admin" o "superadmin"
         nombres=datos.nombres,
         apellidos=datos.apellidos,
         email=datos.email,
         documento=datos.documento,
         telefono=datos.telefono,
-        sede_id=datos.sede_id,
+        sede_id=autorizado.sede_id,  # None si es superadmin
         password_hash=hash_password(datos.password),
     )
     db.add(usuario)

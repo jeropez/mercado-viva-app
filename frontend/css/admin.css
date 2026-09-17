@@ -561,6 +561,31 @@ table.tabla-inventario {
   color: var(--color-texto);
 }
 
+/* Selector de sede del superadmin, dentro del sidebar oscuro */
+#selector-sede-superadmin select {
+  background: rgba(239, 247, 243, 0.08);
+  border-color: rgba(239, 247, 243, 0.25);
+  color: var(--color-fondo);
+}
+
+#selector-sede-superadmin select:focus {
+  border-color: var(--color-primario);
+  background: rgba(239, 247, 243, 0.08);
+}
+
+.badge-rol {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: var(--color-teal);
+  color: var(--color-texto);
+  margin-left: 8px;
+}
+
 @media (max-width: 900px) {
   .dashboard.activo { grid-template-columns: 1fr; }
   .sidebar { display: none; }
